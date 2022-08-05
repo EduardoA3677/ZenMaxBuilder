@@ -519,7 +519,7 @@ _check_user_settings() {
   # Compiler: checks for a valid compiler name
   if [[ $KERNEL_DIR != default ]] \
       && ! [[ -f ${KERNEL_DIR}/Makefile ]] \
-      && ! [[ -d ${KERNEL_DIR}/arch/${ARCH}/configs ]]; then
+      && ! [[ -d ${KERNEL_DIR}/arch/${ARCH}/configs/vendor ]]; then
     _error "$MSG_ERR_CONF_KDIR"; _exit 1
   elif ! [[ $COMPILER =~ ^(default|${PROTON_GCC_NAME}|\
       ${PROTON_CLANG_NAME}|${EVA_GCC_NAME}|${HOST_CLANG_NAME}|\
@@ -887,7 +887,7 @@ _make_menuconfig() {
 _save_defconfig() {
   # While an existing defconfig file is modified
   # the original will be saved as <*_defconfig_bak>
-  _note "$MSG_NOTE_SAVE $DEFCONFIG (arch/${ARCH}/configs)..."
+  _note "$MSG_NOTE_SAVE $DEFCONFIG (arch/${ARCH}/configs/vendor)..."
   [[ -f "${CONF_DIR}/$DEFCONFIG" ]] &&
     _command cp "${CONF_DIR}/$DEFCONFIG" \
               "${CONF_DIR}/${DEFCONFIG}_bak"
@@ -1036,13 +1036,13 @@ _ask_for_kernel_dir() {
   if [[ $KERNEL_DIR == default ]]; then
     _cd "$HOME" "$MSG_ERR_DIR ${red}HOME"
     _prompt "$MSG_ASK_KDIR" 1; read -r -e KERNEL_DIR
-    until [[ -d ${KERNEL_DIR}/arch/${ARCH}/configs ]]; do
+    until [[ -d ${KERNEL_DIR}/arch/${ARCH}/configs/vendor ]]; do
       _error "$MSG_ERR_KDIR ${red}$KERNEL_DIR"
       _prompt "$MSG_ASK_KDIR" 1
       read -r -e KERNEL_DIR
     done
     KERNEL_DIR="$(realpath "$KERNEL_DIR")"
-    CONF_DIR="${KERNEL_DIR}/arch/${ARCH}/configs"
+    CONF_DIR="${KERNEL_DIR}/arch/${ARCH}/configs/vendor"
     _cd "$DIR" "$MSG_ERR_DIR ${red}$DIR"
   fi
 }
