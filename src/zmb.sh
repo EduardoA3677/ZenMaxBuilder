@@ -875,7 +875,7 @@ _make_mrproper() {
 _make_defconfig() {
   _note "$MSG_NOTE_DEFCONFIG $DEFCONFIG [${LINUX_VERSION}]..."
   _command unbuffer make -C "$KERNEL_DIR" \
-    O="$OUT_DIR" ARCH="$ARCH" "$DEFCONFIG" 2>&1
+    O="$OUT_DIR" ARCH="$ARCH" vendor/ "$DEFCONFIG" 2>&1
 }
 
 _make_menuconfig() {
